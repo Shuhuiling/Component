@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+     * {
+         margin: 0;
+         padding: 0;
+     }
+     ul {
+         list-style: none;
+     }
+    .box {
+        position: relative;
+        width: 1226px;
+        height: 460px;
+        margin: 100px auto;
+        overflow: hidden;
+    }
+    .blank {
+        width: 300px;
+        height: 460px;
+        background-color: azure;
+        position: absolute;
+    }
+    ul {
+        position: absolute;
+        /*当5张照片左浮时，没有足够的宽度会掉下去*/
+        width: 500%;
+        top: 0;
+        left: 0;
+    }
+    li {
+        float: left;
+    }
+    .circle{
+        position: absolute;
+         /*小圆点在中间*/
+        left: 50%;
+         /*小圆点浮出*/
+        bottom:10px;
+    }
+    .circle span {
+        /*左浮后，一切正常，，，，不太懂*/
+        float: left;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: rgba(128, 128, 128, 0.45);
+        text-align: center;
+        line-height: 20px;
+        margin-right: 10px;
+        /*当鼠标移动到小圆点时，鼠标指针变成小手*/
+        cursor: pointer;
+    }
+    .circle span.current {
+        background-color: whitesmoke;
+    }
+    </style>
+
+    <script>
+        window.onload = function () {
+
+            var scroll =  document.getElementById("scroll");
+            var circle = document.createElement("div");
+
+            circle.setAttribute("class","circle");
+            scroll.appendChild(circle);
+            var ul = document.getElementById("ul");
+            var lis = ul.children;
+
+            for(var i= 0;i <lis.length;i++) {
+                var span = document.createElement("span");
+                span.innerHTML= i+1;
+                circle.appendChild(span);
+            }
+
+            var child = circle.children;
+            var target = 0;
+            var leader = 0;
+            for(var i =0; i< child.length; i++) {
+                child[i].index = i;
+                child[i].onmouseover = function () {
+                    for(var j=0; j<child.length; j++) {
+                        child[j].className = "";
+                    }
+
+                    this.className= "current";
+                    target = this.index * (-1226) ;  // 目标位置就是当前索引号 * 很字的宽度
+                    console.log(target);
+                }
+            }
+            setInterval(move, 30);
+            function move() {
+                leader += (target - leader) / 5;    // 非匀速运动
+                scroll.children[0].style.left = leader + "px";
+
+                //scroll.children[0].style.left = target + "px";  // 直接跳到对应的位置
+            }
+
+
+        }
+
+    </script>
+</head>
+<body>
+    <div class="box" id="scroll">
+        <ul class="slider" id="ul">
+            <li>
+                <div class="blank"></div>
+                <img src="images/11.jpg" alt="">
+            </li>
+            <li>
+                <div class="blank"></div>
+                <img src="images/22.jpg" alt="">
+            </li>
+            <li>
+                <div class="blank"></div>
+                <img src="images/33.jpg" alt="">
+            </li>
+            <li>
+                <div class="blank"></div>
+                <img src="images/44.jpg" alt="">
+            </li>
+            <li>
+                <div class="blank"></div>
+                <img src="images/55.jpg" alt="">
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
